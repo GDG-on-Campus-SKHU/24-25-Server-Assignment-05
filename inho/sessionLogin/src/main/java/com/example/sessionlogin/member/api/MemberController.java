@@ -40,12 +40,13 @@ public class MemberController {
      */
     @PostMapping("/login")
     public ResponseEntity<MemberLoginResDto> login(@RequestBody LoginReqDto loginReqDto, HttpServletRequest request) {
+        // 멤버 비번이랑 Dto비번이랑 확인하는 코드
         MemberLoginResDto response = memberService.login(loginReqDto);
 
-        // 세션을 가져오거나 생성합니다.
+        // 세션을 가져오거나 생성합니다,  원래 메서드
         HttpSession session = request.getSession(true);
 
-        // Authentication 객체 생성
+        // Authentication 객체 생성, 원래 메서드
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 loginReqDto.loginId(), null, null);
 
