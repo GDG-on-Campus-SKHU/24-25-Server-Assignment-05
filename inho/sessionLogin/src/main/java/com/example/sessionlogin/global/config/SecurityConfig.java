@@ -34,8 +34,8 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/members/join", "/api/members/login").permitAll()
-                                .anyRequest().authenticated()
+                                .requestMatchers("/api/members/join", "/api/members/login").permitAll() // permitAll 은 인가가 필요없다는 뜻
+                                .anyRequest().authenticated()  // 위 2개 api 빼고는 다 인가가 필요하다라는 뜻
                 );
 
         return http.build();
