@@ -42,8 +42,8 @@ public class MemberController {
     public ResponseEntity<MemberLoginResDto> login(@RequestBody LoginReqDto loginReqDto, HttpServletRequest request) {
         MemberLoginResDto response = memberService.login(loginReqDto);
 
-        // 세션을 가져오거나 생성합니다
-        HttpSession session = request.getSession(true);ㄴ
+        // 세션을 가져오거나 생성합니다.
+        HttpSession session = request.getSession(true);
 
         // Authentication 객체 생성
         Authentication authentication = new UsernamePasswordAuthenticationToken(

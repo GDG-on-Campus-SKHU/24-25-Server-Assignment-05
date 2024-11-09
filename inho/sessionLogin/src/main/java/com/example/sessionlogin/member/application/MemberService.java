@@ -52,6 +52,7 @@ public class MemberService {
     public MemberLoginResDto login(LoginReqDto loginReqDto) {
         Member member = memberRepository.findByLoginId(loginReqDto.loginId())
                 .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
+
         validationPassword(loginReqDto.pwd(), member.getPwd());
 
         return MemberLoginResDto.from(member);

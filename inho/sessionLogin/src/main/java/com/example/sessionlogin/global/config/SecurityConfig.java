@@ -28,14 +28,14 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutUrl("/api/members/logout")
                         .logoutSuccessHandler(logoutSuccessHandler())
-                        .invalidateHttpSession(true) //세션 무효화
+                        .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID") // 쿠키 삭제
                         .permitAll()
                 )
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/api/members/join", "/api/members/login").permitAll()
-                                .anyRequest().authenticated() //위 두개만 permitall 한다..
+                                .anyRequest().authenticated()
                 );
 
         return http.build();
