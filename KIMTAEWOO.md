@@ -19,11 +19,11 @@
 ### (2) 회원가입이 되어있는 경우
 ID와 비밀번호를 입력한 뒤 로그인을 시도한다.
 1. ID가 서버DB에 없는 경우 &rightarrow; `"회원 정보를 찾을 수 없습니다"`
-2. ID는 서버DB에 존재하지만 비밀번호가 DB와 일치하지 않는 겨우 &rightarrow; `"비밀번호가 일치하지 않습니다"`
+2. ID는 서버DB에 존재하지만 비밀번호가 DB와 일치하지 않는 우 &rightarrow; `"비밀번호가 일치하지 않습니다"`
 3. ID와 비밀번호가 모두 DB와 일치하는 경우 &rightarrow; _로그인 성공_
 
 ## 로그인 성공 후 사용자에게 제공되는 경험
-사용자는 브라우저를 닫거나 쿠키가 만료될 때까지 로그인 상태를 유지한다.<br>
+사용자는 브라우저를 닫거나 쿠키 만료 시간이 다 될때까지 로그인 상태를 유지한다.<br>
 
 사용자가 로그인에 성공하면, 서버로부터 세션ID가 들어있는 쿠키를 전달받는다.<br>
 쿠키를 전달받은 이후 보내는 모든 요청에 사용자는 해당 쿠키를 포함시킨다.<br>
@@ -34,14 +34,14 @@ ID와 비밀번호를 입력한 뒤 로그인을 시도한다.
 # 서버가 로그인한 사용자를 인식하는 방식
 
 ## 시작하기 전에
-이번 로그인 코드부터는 자바의 **다형성** 개념이 적극적으로 사용됩니다. 다형성은 하나의 참조 변수가 여러 가지 객체를 참조할 수 있는 것을 말합니다.<br>
+이번 로그인 코드부터는 자바의 **다형성** 개념이 적극적으로 사용됩니다. 다형성은 하나의 참조 변수가 여러 가지 객체를 참조할 수 있는 특성을 의미합니다.<br>
 <img width="300" alt="HttpServletRequest계층도" src="https://github.com/user-attachments/assets/b50145b2-cfdd-4699-a75a-cd8b7a13f16b">
 로그인시 가장 먼저 사용되는 `HttpServlettRequest` 클래스의 계층도입니다.<br>
 우리는 코드에서 `HttpServletRequest`의 인터페이스의 인스턴스인 `request`를 만들고 사용합니다. 하지만 자바에서 인터페이스의 인스턴스는 만들 수 없습니다.
 게다가 `HttpServletRequest`는 인터페이스이기 때문에 `getSession`이라는 메서드가 정의되어 있지만, 바디가 없는 추상 메서드이므로 실행이 불가능합니다.
 따라서 내부적으로 **서블릿 컨테이너** 를 통해 `HttpServletRequest` 인터페이스의 구현체 클래스인 `RequestFacade` 객체를 먼저 생성한 뒤 이것을 `request`에 할당합니다.
-구현체인 `RequestFacade` 안에는 `HttpServletRequest` 인터페이스의 추상 메서드들이 오버라이딩 되어 이습니다.
-구현체를 할당받은 뒤로 `request` 객체는 `geSession` 메서드를 사용할 수 있습니다.<br>
+구현체인 `RequestFacade` 안에는 `HttpServletRequest` 인터페이스의 추상 메서드들이 오버라이딩 되어 습니다.
+구현체를 할당받은 뒤로 `request` 객체는 `getSession` 메서드를 사용할 수 있습니다.<br>
 이후 나오는 `Authentication`, `SecurityContext` 인터페이스의 경우도 마찬가지입니다. 내부적으로는 그 자식인 구현체 클래스를 생성한 뒤 그것을 할당받는 식으로 동작합니다.
 이는 객체지향의 **다형성** 이라는 특징이 사용된 아주 중요한 개념이라고 생각해 시작하기 전 이것을 짚고 넘어갑니다.
 
@@ -84,7 +84,7 @@ ex) `JwtAuthenticationToken`, `OAuth2AuthenticationToken`
 **스레드 로컬** 방식을 통해 요청별 인증 정보를 안전하게 분리해 주고, 보안 관리를 도와주며, 어플리케이션의 모든 계층에서 접근할 수 있도록(전역 관리가 가능하도록) 해준다.
 
 ### 7. 세션에 인증 정보 저장
-지금까지의 과정이 모두 **임시**였던 이유는, 그 과정들이 모두 **요청 스레드**에 임시저장된 상태로 실행되었기 때문이다. 이 상태에서는 요청이 종료되면 `ecurityContext`와 `Authentication`의 정보가 초기화된다. 
+지금까지의 과정이 모두 **임시**였던 이유는, 그 과정들이 모두 **요청 스레드**에 임시저장된 상태로 실행되었기 때문이다. 이 상태에서는 요청이 종료되면 `SecurityContext`와 `Authentication`의 정보가 초기화된다. 
 따라서 이후 요청에서도 인증 정보가 유지될 수 있도록 스레드가 들고 있는 SecurityContext를 `session.setAttribute`를 통해 세션에 저장한다.
 
 ### 8. 로그인 성공 응답
@@ -129,8 +129,8 @@ ex) `JwtAuthenticationToken`, `OAuth2AuthenticationToken`
    하지만 Referer 헤더는 클라이언트에서 쉽게 변조가 가능해 잘 사용하지 않는다고 합니다.
 3. CSRF 토큰 사용
    HTTP Request 가 아닌, HTML의 form 태그 내부의 type="hidden" 필드로 보낼 수 있는 CSRF 토큰을 사용해 방지가 가능합니다. 필터 체인을 통해 설정 가능합니다.
-4. CAPCHA 도입
-   CAPCHA를 도입해 CAPCHA 인증 코드를 확인하는 식으로 방지가 가능합니다.
+4. CAPTCHA 도입
+   CAPTCHA를 도입해 CAPTCHA 인증 코드를 확인하는 식으로 방지가 가능합니다.
 ![CSRF](https://github.com/user-attachments/assets/6ff8f8d9-8434-4ba3-bd89-a98348f13e01)
 
 
